@@ -3,6 +3,7 @@ package com.meteor.setu.util;
 import com.alibaba.fastjson2.JSON;
 import com.meteor.setu.PluginMain;
 import com.meteor.setu.model.DataItem;
+import com.meteor.setu.model.GitHubRelease;
 import com.meteor.setu.model.SetuResponse;
 import com.meteor.setu.model.Urls;
 import okhttp3.OkHttpClient;
@@ -62,6 +63,26 @@ public class ImageUtil {
         } catch (IOException e) {
         }
         return null;
+    }
+
+    public static GitHubRelease getLatestRelease(String owner, String repo) {
+        OkHttpClient client = new OkHttpClient();
+        String url = "https://api.github.com/repos/" + owner + "/" + repo + "/releases/latest";
+
+        Request request = new Request.Builder()
+                .url(url)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            if (!response.isSuccessful()) {
+                throw new IOException("Unexpected code " + response);
+            }
+            // 使用Fastjson解析响应体为GitHubRelease对象
+            return JSON.parseObject(response.body().string(), GitHubRelease.class);
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
 }

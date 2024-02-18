@@ -1,4 +1,4 @@
-基于 [WeChatBc](https://github.com/meteorOSS/WeChatBc) 实现的微信[不能说]插件
+基于 [WeChatBc](https://github.com/meteorOSS/WeChatBc) 实现
 
 ## 功能
 

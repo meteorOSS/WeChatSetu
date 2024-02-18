@@ -5,7 +5,7 @@
 ### 随机漂亮妹妹视频
 发送 "plmm" 触发
 
-bot将发送一个美少女跳舞的视频
+bot将随机一个美少女跳舞的视频发送
 
 ![image](https://github.com/meteorOSS/WeChatSetu/assets/61687266/67236e40-ecab-40c9-b48f-844fb3dad471)
 

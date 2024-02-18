@@ -1,17 +1,22 @@
 package com.meteor.setu.util;
 
 import com.alibaba.fastjson2.JSON;
+import com.meteor.setu.Options;
 import com.meteor.setu.PluginMain;
 import com.meteor.setu.model.DataItem;
 import com.meteor.setu.model.GitHubRelease;
 import com.meteor.setu.model.SetuResponse;
 import com.meteor.setu.model.Urls;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import okhttp3.HttpUrl;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.*;
 import java.util.List;
+import java.util.Set;
 
 public class ImageUtil {
 
@@ -43,10 +48,28 @@ public class ImageUtil {
         }
     }
 
-    public static File getSetu(){
+
+    @Data
+    @AllArgsConstructor
+    public static class Setu{
+        private File file;
+        private DataItem dataItem;
+    }
+
+    public static Setu getSetu(String tag){
+
+
+        String url = "https://api.lolicon.app/setu/v2?size=original&size=regular&r18=[r18]&excludeAI=[ai]";
+
+        url = url.replace("[r18]", Options.optionsMap.getOrDefault("r18","0"))
+                .replace("[ai]",Options.optionsMap.getOrDefault("ai","false"));
+
+        if(tag!=null){
+            url += ("&"+tag);
+        }
 
         Request request = new Request.Builder()
-                .url("https://api.lolicon.app/setu/v2?size=original&size=regular")
+                .url(url)
                 .get()
                 .build();
 
@@ -58,7 +81,7 @@ public class ImageUtil {
                 DataItem dataItem = data.get(0);
                 Urls urls = dataItem.getUrls();
                 String regular = urls.getRegular();
-                return downloadSetu(regular);
+                return new Setu(downloadSetu(regular),dataItem);
             }
         } catch (IOException e) {
         }

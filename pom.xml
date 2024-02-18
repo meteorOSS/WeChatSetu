@@ -23,9 +23,9 @@
         <dependency>
             <groupId>com.meteor</groupId>
             <artifactId>wechatbc</artifactId>
-            <version>1.0.2</version>
+            <version>1.0.6</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/lib/WeChatBc-1.0.3-SNAPSHOT.jar</systemPath>
+            <systemPath>${basedir}/src/lib/WeChatBc-1.0.6-SNAPSHOT.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

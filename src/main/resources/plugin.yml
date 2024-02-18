@@ -4,3 +4,5 @@ version: 1.0
 authors:
   - 'meteor'
 description: '色色色,千古一祸。君子失德,小人常乐'
+commands:
+  - "setu"

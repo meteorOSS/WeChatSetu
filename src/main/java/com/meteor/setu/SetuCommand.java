@@ -1,6 +1,5 @@
 package com.meteor.setu;
 
-import com.meteor.wechatbc.HttpAPI;
 import com.meteor.wechatbc.command.CommandExecutor;
 import com.meteor.wechatbc.command.sender.CommandSender;
 import com.meteor.wechatbc.command.sender.ConsoleSender;

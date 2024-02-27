@@ -24,7 +24,7 @@ public class VideoDownloader {
 
         VideoInfo videoInfo = JSON.parseObject(response.body().string(), VideoInfo.class);
         
-        String videoUrl = "https:" + videoInfo.getMp4(); // 确保URL是完整的
+        String videoUrl = videoInfo.getVideo();
         Request videoRequest = new Request.Builder()
                 .url(videoUrl)
                 .build();

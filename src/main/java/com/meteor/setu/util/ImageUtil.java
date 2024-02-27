@@ -3,10 +3,7 @@ package com.meteor.setu.util;
 import com.alibaba.fastjson2.JSON;
 import com.meteor.setu.Options;
 import com.meteor.setu.PluginMain;
-import com.meteor.setu.model.DataItem;
-import com.meteor.setu.model.GitHubRelease;
-import com.meteor.setu.model.SetuResponse;
-import com.meteor.setu.model.Urls;
+import com.meteor.setu.model.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import okhttp3.HttpUrl;
@@ -15,22 +12,29 @@ import okhttp3.Request;
 import okhttp3.Response;
 
 import java.io.*;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
 public class ImageUtil {
 
-    private static OkHttpClient okHttpClient = new OkHttpClient();
+    private static OkHttpClient okHttpClient = new OkHttpClient().newBuilder()
+//            .followRedirects(false) // 禁止自动重定向
+//            .followSslRedirects(false)
+            .build();
 
 
-    public static File downloadSetu(String url){
+    public static File downloadSetu(String url,String fileName){
         Request request = new Request.Builder().url(url).build();
 
         try (Response response = okHttpClient.newCall(request).execute()) {
-
+            if (!response.isSuccessful()) {
+                return downloadSetu(url,fileName);
+            }
             // 从URL中提取文件名
-            String filename = url.substring(url.lastIndexOf('/') + 1);
-            File file = new File(System.getProperty("user.dir"), filename);
+            String filename = fileName!=null?fileName:url.substring(url.lastIndexOf('/') + 1);
+            File file = new File(PluginMain.INSTANCE.getFile(),filename);
 
             // 读取响应体并写入文件
             try (InputStream in = response.body().byteStream();
@@ -55,6 +59,9 @@ public class ImageUtil {
         private File file;
         private DataItem dataItem;
     }
+
+
+
 
     public static Setu getSetu(String tag){
 
@@ -81,8 +88,35 @@ public class ImageUtil {
                 DataItem dataItem = data.get(0);
                 Urls urls = dataItem.getUrls();
                 String regular = urls.getRegular();
-                return new Setu(downloadSetu(regular),dataItem);
+                return new Setu(downloadSetu(regular,null),dataItem);
             }
+        } catch (IOException e) {
+        }
+        return null;
+    }
+
+
+    private static String drawURL =
+            "https://api.linhun.vip/api/huitu?text=@text@&prompt=@ban@" +
+                    "&&ratio=@ra@&apiKey=YlhGblozazFaRlI0V21NMFp6VTFUVFJTTnk5d1FUMDk=";
+
+    public static DrawImage draw(String text,String ban){
+        List<String> list = Arrays.asList("方", "宽", "高");
+        Collections.shuffle(list);
+        String url = drawURL.replace("@text@", text)
+                .replace("@ban@",ban)
+                .replace("@ra@",list.get(0));
+
+
+        Request request = new Request.Builder()
+                .url(url)
+                .get()
+                .build();
+
+        try(            Response response = okHttpClient.newCall(request).execute();
+        ) {
+            DrawImage drawImage = JSON.toJavaObject(response.body().string(), DrawImage.class);
+            return drawImage;
         } catch (IOException e) {
         }
         return null;

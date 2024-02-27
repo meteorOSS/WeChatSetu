@@ -7,23 +7,29 @@
     <groupId>org.example</groupId>
     <artifactId>WeChatSetu</artifactId>
     <version>1.0-SNAPSHOT</version>
-
+    <repositories>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
+        </repository>
+    </repositories>
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
+
     <dependencies>
+        <dependency>
+            <groupId>com.github.meteorOSS</groupId>
+            <artifactId>wechat-bc</artifactId>
+            <version>v1.1.3</version>
+            <scope>provided</scope>
+        </dependency>
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
             <version>1.18.30</version>
-            <scope>provided</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.meteor</groupId>
-            <artifactId>wechat-bc</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
     </dependencies>
